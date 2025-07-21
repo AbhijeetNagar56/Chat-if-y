@@ -1,19 +1,20 @@
 
-import model from '../models/login.js'
+import model from '../models/User.js'
 import bcrypt from 'bcryptjs'
 import jwt from "jsonwebtoken"
-const JWT_SECRET = "abcdefgh";
 
+
+const JWT_SECRET = "abc";
 
 
 // sign up
 export async function createUser(req, res) {
     try {
-        const { username, password } = req.body;
-        const userExists = await model.findOne({ username });
+        const { name, email, password } = req.body;
+        const userExists = await model.findOne({ email });
         if (userExists) return res.status(400).json({ msg: 'User already exists' });
         const hashedPassword = await bcrypt.hash(password, 10);
-        const newUser = new model({ username, password: hashedPassword });
+        const newUser = new model({ name, email, password: hashedPassword});
         await newUser.save();
         res.status(201).json({ msg: 'User registered successfully' });
     } catch (error) {
@@ -26,8 +27,8 @@ export async function createUser(req, res) {
 // sign in
 export async function getUser(req, res) {
     try {
-        const {username, password} = req.body;
-        const user = await model.findOne({username});
+        const {name, email, password} = req.body;
+        const user = await model.findOne({email});
         if(!user) return res.status(404).json({message:"user not found"});
         const passCorrect = await bcrypt.compare(password, user.password);
         if(!passCorrect) return res.status(400).json({msg:'password not correct'});

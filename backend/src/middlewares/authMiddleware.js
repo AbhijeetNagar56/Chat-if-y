@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
 
-const JWT_SECRET = "abcdefgh";
+const JWT_SECRET = "abc";
 
 // Middleware to protect routes
 const authMiddleware = (req, res, next) => {
@@ -15,8 +15,6 @@ const authMiddleware = (req, res, next) => {
     res.status(401).json({ msg: 'Token is not valid' });
   }
 };
-
-
 
 
 export default authMiddleware;

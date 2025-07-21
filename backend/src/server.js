@@ -1,8 +1,7 @@
 import express from "express"
 import dotenv from "dotenv"
-import cors from 'cors'
 import router from "./routes/registration.js";
-import mainRoute from "./routes/user.js"
+import home from "./routes/user.js"
 import { connectDB } from "./config/dataBase.js";
 
 
@@ -12,19 +11,15 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 
-app.use(
-    cors({
-        origin:"fontendlink",
-    })
-);
+
 app.use(express.json());
-app.get('/', (req, res) => {
+app.get('/', (_, res) => {
     res.status(200).json({ message: "home page" });
 });
 
 
 app.use('/user', router);
-app.use('/home', mainRoute);
+app.use('/home', home);
 
 
 connectDB().then(() => {

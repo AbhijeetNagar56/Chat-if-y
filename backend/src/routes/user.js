@@ -11,6 +11,6 @@ router.get('/', authMiddleware, (req, res) => {
 });
 router.put('/:username', updatePassword);
 router.delete('/:username', deleteUser);
-
+router.patch('/:username', updateBio);
 
 export default router;
