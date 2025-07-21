@@ -3,6 +3,7 @@ import dotenv from "dotenv"
 import router from "./routes/registration.js";
 import home from "./routes/user.js"
 import { connectDB } from "./config/dataBase.js";
+import authMiddleware from "./middlewares/authMiddleware.js";
 
 
 

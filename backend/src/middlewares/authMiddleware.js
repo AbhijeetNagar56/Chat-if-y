@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
 
-const JWT_SECRET = "abc";
+const JWT_SECRET = process.env.JWT || "a";
 
 // Middleware to protect routes
 const authMiddleware = (req, res, next) => {

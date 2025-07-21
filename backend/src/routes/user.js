@@ -1,16 +1,13 @@
 import express from 'express'
-import authMiddleware from '../middlewares/authMiddleware.js';
-import { deleteUser, updateBio, updatePassword } from '../controllers/userController.js';
+import { deleteUser, getAllMessage, sendMessage } from '../controllers/messageController.js';
 const router = express.Router();
 
 
 
-// Protected route
-router.get('/', authMiddleware, (req, res) => {
-  res.json({ msg: 'Welcome to protected route!', user: req.user });
-});
-router.put('/:username', updatePassword);
-router.delete('/:username', deleteUser);
-router.patch('/:username', updateBio);
+
+router.get('/:userId', getAllMessage);
+router.post('/', sendMessage);
+
+router.delete('/', deleteUser);
 
 export default router;

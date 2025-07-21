@@ -4,7 +4,7 @@ import bcrypt from 'bcryptjs'
 import jwt from "jsonwebtoken"
 
 
-const JWT_SECRET = "abc";
+const JWT_SECRET = process.env.JWT || "a";
 
 
 // sign up
@@ -32,7 +32,7 @@ export async function getUser(req, res) {
         if(!user) return res.status(404).json({message:"user not found"});
         const passCorrect = await bcrypt.compare(password, user.password);
         if(!passCorrect) return res.status(400).json({msg:'password not correct'});
-        const token = jwt.sign({id:user._id}, JWT_SECRET, {expiresIn: '1h'});
+        const token = jwt.sign({id:user._id}, JWT_SECRET, {expiresIn: '7d'});
         res.json({token});
     } catch (error) {
         console.log("Error in the app ", error);
@@ -41,40 +41,3 @@ export async function getUser(req, res) {
 }
 
 
-
-
-
-// pass updation
-export async function updatePassword(req, res) {
-    try {
-        const { name, pass } = req.body;
-        res.status(200).json({ message: `${name} your pass has been updated` });
-    } catch (error) {
-        console.log("Error in the app ", error);
-        res.status(500).json({ message: "Internal Server error" });
-    }
-}
-
-
-// bio update
-export async function updateBio(req, res) {
-    try {
-        const { name, pass } = req.body;
-        res.status(200).json({ message: `${name} your pass has been updated` });
-    } catch (error) {
-        console.log("Error in the app ", error);
-        res.status(500).json({ message: "Internal Server error" });
-    }
-}
-
-
-
-// account deletion
-export async function deleteUser(req, res) {
-    try {
-        res.status(200).json({ message: "deleted successfully" });
-    } catch (error) {
-        console.log("Error in the app ", error);
-        res.status(500).json({ message: "Internal Server error" });
-    }
-}
