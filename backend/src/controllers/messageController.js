@@ -17,8 +17,6 @@ export async function welcome(req, res) {
 
 
 
-
-
 export async function getAllMessage(req, res) {
   try {
     const messages = await Message.find({
