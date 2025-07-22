@@ -1,7 +1,7 @@
 import express from "express"
 import dotenv from "dotenv"
-import router from "./routes/registration.js";
-import home from "./routes/user.js"
+import authRoutes from "./routes/authRoutes.js";
+import chatRoutes from "./routes/chatRoutes.js"
 import { connectDB } from "./config/dataBase.js";
 import authMiddleware from "./middlewares/authMiddleware.js";
 
@@ -12,19 +12,18 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 
-
+// middlewares
 app.use(express.json());
 app.get('/', (_, res) => {
     res.status(200).json({ message: "home page" });
 });
 
-
-app.use('/user', router);
-app.use('/home', home);
+app.use('/api/auth', authRoutes);
+app.use('/api/home', authMiddleware, chatRoutes);
 
 
 connectDB().then(() => {
     app.listen(port, () => {
-        console.log(`Server is running at http://localhost:${port}`);
+        console.log(`Server is running on port: ${port}`);
     });
 });

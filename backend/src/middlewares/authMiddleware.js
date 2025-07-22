@@ -1,8 +1,6 @@
 import jwt from "jsonwebtoken";
+const JWT_SECRET = process.env.JWT;
 
-const JWT_SECRET = process.env.JWT || "a";
-
-// Middleware to protect routes
 const authMiddleware = (req, res, next) => {
   const token = req.header('Authorization')?.split(" ")[1];
   if (!token) return res.status(401).json({ msg: 'No token, authorization denied' });
@@ -12,6 +10,7 @@ const authMiddleware = (req, res, next) => {
     req.user = decoded.id;
     next();
   } catch (err) {
+    console.log('error is ', err);
     res.status(401).json({ msg: 'Token is not valid' });
   }
 };
