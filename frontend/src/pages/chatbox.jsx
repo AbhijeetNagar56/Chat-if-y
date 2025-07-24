@@ -1,24 +1,25 @@
+import ChatArea from "../components/ChatArea";
+import NavBar from "../components/NavBar";
+import Sidebar from "../components/SideBar";
 
-import NavBar from '../components/navBar';
-import Inbox from '../components/inbox';
-import Contact from '../components/contact';
+
 
 const Chatbox = () => {
   return (
-    <div data-theme="forest" className="min-h-screen flex flex-col bg-base-200">
+    <div data-theme = 'forest' className="min-h-screen flex flex-col bg-base-200">
       {/* Top Nav */}
       <NavBar />
 
       {/* Chat Body */}
-      <div className="flex flex-1 overflow-hidden">
+      <div className="flex border-t-2  overflow-hidden h-[890px]">
         {/* Sidebar - Contacts */}
-        <div className="w-1/4 bg-base-100 shadow-md overflow-y-auto p-4">
-          <Contact />
+        <div className="w-1/4 bg-base-100 shadow-md overflow-y-auto p-4 border-r-2">
+          <Sidebar />
         </div>
 
         {/* Main Chat Area */}
-        <div className="flex-1 bg-base-100 overflow-y-auto p-4">
-          <Inbox />
+        <div className="flex w-3/4 bg-base-100 overflow-y-auto p-4">
+         <ChatArea />
         </div>
       </div>
     </div>
