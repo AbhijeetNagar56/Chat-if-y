@@ -27,7 +27,7 @@ export async function createUser(req, res) {
 // sign in
 export async function getUser(req, res) {
     try {
-        const {_, email, password} = req.body;
+        const { name, email, password} = req.body;
         const user = await User.findOne({email});
         if(!user) return res.status(404).json({message:"user not found"});
         const passCorrect = await bcrypt.compare(password, user.password);

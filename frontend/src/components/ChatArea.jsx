@@ -1,8 +1,18 @@
 import MessageInput from './MessageInput';
+import axiosInstance from '../api/axios';
 
-export default function ChatArea({name, status}) {
+export default function ChatArea({ name, status }) {
     const there = true;
     if (there) {
+        const fetchMessage = async () => {
+            try {
+                const response = await axiosInstance.get('/home/687dce8a77d29557df05b90a');
+                console.log(response.data); // ✅ Store response in state
+            } catch (error) {
+                console.error('Error fetching users:', error);
+            }
+        }
+        fetchMessage();
         return (
             <div className="flex-1 flex flex-col">
                 {/* Messages */}
@@ -51,7 +61,7 @@ export default function ChatArea({name, status}) {
             </div>
         );
     } else {
-        return(
+        return (
             <div>
                 no message
             </div>

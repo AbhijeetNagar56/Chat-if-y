@@ -5,6 +5,7 @@ import authRoutes from "./routes/authRoutes.js";
 import chatRoutes from "./routes/chatRoutes.js"
 import { connectDB } from "./config/dataBase.js";
 import authMiddleware from "./middlewares/authMiddleware.js";
+import User from "./models/User.js";
 
 
 
@@ -20,8 +21,15 @@ app.use(
     })
 );
 app.use(express.json());
-app.get('/api', (_, res) => {
-    res.status(200).json({ message: "home page welcome sir" });
+app.get('/api', async (req, res) => {
+    try {
+        const users = await User.find();
+        res.status(200).json( users );
+    } catch (error) {
+        console.log(error);
+        res.status(404).json({ msg:"no users"});
+    }
+    
 });
 
 app.use('/api/auth', authRoutes);
