@@ -1,5 +1,6 @@
 import express from "express"
 import dotenv from "dotenv"
+import cors from 'cors'
 import authRoutes from "./routes/authRoutes.js";
 import chatRoutes from "./routes/chatRoutes.js"
 import { connectDB } from "./config/dataBase.js";
@@ -13,9 +14,14 @@ const port = process.env.PORT;
 
 
 // middlewares
+app.use(
+    cors({
+        origin: "http://localhost:5173",
+    })
+);
 app.use(express.json());
-app.get('/', (_, res) => {
-    res.status(200).json({ message: "home page" });
+app.get('/api', (_, res) => {
+    res.status(200).json({ message: "home page welcome sir" });
 });
 
 app.use('/api/auth', authRoutes);

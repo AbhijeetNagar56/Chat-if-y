@@ -18,8 +18,8 @@ const Chatbox = () => {
         </div>
 
         {/* Main Chat Area */}
-        <div className="flex w-3/4 bg-base-100 overflow-y-auto p-4">
-         <ChatArea />
+        <div className="flex w-3/4 bg-base-100 overflow-y-auto">
+         <ChatArea name = {"John"} status={"online"}/>
         </div>
       </div>
     </div>
