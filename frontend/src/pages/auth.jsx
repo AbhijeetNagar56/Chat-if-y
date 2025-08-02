@@ -1,32 +1,25 @@
-
 import { useState } from "react";
 import axiosInstance from "../api/axios";
-
-
-
-
-
 const auth = () => {
   const [su, setsu] = useState(true);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
 
-  const handleSignup = async (e) => {
-    e.preventDefault();
+  const handleSignup = async () => {
     try {
       const response = await axiosInstance.post('/auth', {
         name:name,
         email:email,
         password:password
       });
-      console.log('Login successful:', response.data);
+      console.log('signup successful:', response.data);
+      handleLogin();
     } catch (error) {
       console.error('Login error:', error.response?.data || error.message);
     }
   };
-  const handleLogin = async (e) => {
-    e.preventDefault();
+  const handleLogin = async () => {
     try {
       const response = await axiosInstance.post('/auth/login', {
         name:name,
