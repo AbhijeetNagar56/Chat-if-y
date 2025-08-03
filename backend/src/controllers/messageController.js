@@ -21,7 +21,7 @@ export async function getAllMessage(req, res) {
         { sender: req.user, receiver: req.params.userId },
         { sender: req.params.userId, receiver: req.user }
       ]
-    }).sort('createdAt');
+    }).sort({'createdAt': -1});
     const decryptedMessages = messages.map((msg) => ({
       content: decrypt(msg.content),
     }));

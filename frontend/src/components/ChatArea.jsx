@@ -1,55 +1,69 @@
-import MessageInput from './MessageInput';
+
 import axiosInstance from '../api/axios';
 import { useEffect, useState } from 'react';
 import Sended from './Sended';
+import Inboxmsg from './InboxMsg';
 
 export default function ChatArea({ person }) {
-    if (person) {
-        const [msg, setmsg] = useState([]);
-        const fetchMessage = async () => {
-            try {
-                const response = await axiosInstance.get(`/home/${person._id}`);
-                setmsg(response.data, person._idx);
-            } catch (error) {
-                console.error('Error fetching users:', error);
-            }
+    const [msg, setMsg] = useState([]);
+    const [text, setText] = useState('');
+    const sendMsg = async () => {
+        try {
+            const response = await axiosInstance.post(`/home/${person._id}`, {
+                content: text
+            });
+            console.log('Message sent:', response.data);
+            setText('');
+            fetchMessage(); // Refresh messages after sending
+        } catch (error) {
+            console.error('Error fetching users:', error);
         }
-        fetchMessage()
-        // useEffect(() => {
-        //     const fetchMessage = async () => {
-        //         try {
-        //             const response = await axiosInstance.get(`/home/${person._id}`);
-        //             setmsg(response.data, person._idx);
-        //         } catch (error) {
-        //             console.error('Error fetching users:', error);
-        //         }
-        //     }
-        //     fetchMessage()
-        // }, []); // Empty dependency array to run only once
-        return (
-            <div className="flex-1 flex flex-col">
-                {/* Messages */}
-                <div className='bg-base-300 w-[100%] p-5'>
-                    <h1 className='font-extrabold'>{person.name}</h1>
-                    <p className='font-extralight text-xs'>{person.email}</p>
-                </div>
-                {msg.map((c) => (
-                    <Sended key={c._id} txt={c.content} />
-                ))}
+    }
+    const fetchMessage = async () => {
+        try {
+            const response = await axiosInstance.get(`/home/${person._id}`);
+            setMsg(response.data);
+        } catch (error) {
+            console.error('Error fetching messages:', error);
+        }
+    };
+    useEffect(() => {
+        if (person) fetchMessage();
+    }, [person]);
 
-                {/* Fixed Input */}
-                <div className='bottom-5 fixed w-[75%]'>
-                    <MessageInput toId={person._id} />
-                </div>
-
-            </div>
-        );
-    } else {
-        return (
-            <div>
-                No Message
-            </div>
-        );
+    if (person === undefined || Object.keys(person).length === 0) {
+        return <div className='mt-[30%] ml-[40%] text-5xl'>Start Conversation</div>;
     }
 
+    return (
+        <div className="flex-1 flex flex-col">
+            {/* Header */}
+            <div className="bg-base-300 w-full p-5">
+                <h1 className="font-extrabold">{person.name}</h1>
+                <p className="font-extralight text-xs">{person.email}</p>
+            </div>
+
+            {/* Messages */}
+            <div className="flex-1 overflow-y-auto mb-[10%] p-4">
+                {msg.map((c) =>
+                    String(c.receiver) === String(person._id) ? (
+                        <Sended key={c._id} txt={c.content} />
+                    ) : (
+                        <Inboxmsg key={c._id} txt={c.content} name={person.name} sent={person.createdAt} />
+                    )
+                )}
+            </div>
+
+            {/* Input */}
+            <div className="fixed bottom-5 w-[75%]">
+                <fieldset className="fieldset bg-base-200 border-base-300 rounded-box w-[100%] border p-4">
+                    <div className="justify-center join">
+                        <input type="text" value={text} onChange={(e) => setText(e.target.value)} className="input w-[80%] join-item" placeholder="Type..." />
+                        <button onClick={sendMsg} className="btn btn-accent join-item">send</button>
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+    );
 }
+

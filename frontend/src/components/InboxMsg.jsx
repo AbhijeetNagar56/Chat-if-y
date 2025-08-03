@@ -1,6 +1,6 @@
 
 
-const InboxMsg = ({txt}) => {
+const InboxMsg = ({txt, name, sent}) => {
     return (
         <div className="chat p-5 chat-start">
             <div className="chat-image avatar">
@@ -12,8 +12,8 @@ const InboxMsg = ({txt}) => {
                 </div>
             </div>
             <div className="chat-header">
-                Obi-Wan Kenobi
-                <time className="text-xs opacity-50">12:45</time>
+                {name}
+                <time className="text-xs opacity-50">{sent}</time>
             </div>
             <div className="chat-bubble">{txt}</div>
             <div className="chat-footer opacity-50">Delivered</div>
