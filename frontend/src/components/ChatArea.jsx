@@ -4,7 +4,10 @@ import { useEffect, useState } from 'react';
 import Sended from './Sended';
 import Inboxmsg from './InboxMsg';
 
-export default function ChatArea({ person }) {
+export default function ChatArea({ person, myId }) {
+    if (person === undefined || Object.keys(person).length === 0) {
+        return <div className='mt-[30%] ml-[40%] text-5xl'>Start Conversation</div>;
+    }
     const [msg, setMsg] = useState([]);
     const [text, setText] = useState('');
     const sendMsg = async () => {
@@ -31,9 +34,8 @@ export default function ChatArea({ person }) {
         if (person) fetchMessage();
     }, [person]);
 
-    if (person === undefined || Object.keys(person).length === 0) {
-        return <div className='mt-[30%] ml-[40%] text-5xl'>Start Conversation</div>;
-    }
+    
+
 
     return (
         <div className="flex-1 flex flex-col">
@@ -46,7 +48,7 @@ export default function ChatArea({ person }) {
             {/* Messages */}
             <div className="flex-1 overflow-y-auto mb-[10%] p-4">
                 {msg.map((c) =>
-                    String(c.receiver) === String(person._id) ? (
+                    String(c.sender) === String(myId._id) ? (
                         <Sended key={c._id} txt={c.content} />
                     ) : (
                         <Inboxmsg key={c._id} txt={c.content} name={person.name} sent={person.createdAt} />

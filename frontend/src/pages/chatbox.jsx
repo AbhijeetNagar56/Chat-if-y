@@ -1,12 +1,11 @@
 import ChatArea from "../components/ChatArea";
 import NavBar from "../components/NavBar";
-import Sidebar from "../components/SideBar";
 import { useState, useEffect } from "react";
 import axiosInstance from "../api/axios";
-import ContactItem from "../components/ContactItem";
 
 const Chatbox = () => {
   const [curruser, setCurruser] = useState({});
+  const [myid, setMyId] = useState({});
   const [users, setUsers] = useState([]);
   useEffect(() => {
     const fetchUsers = async () => {
@@ -20,11 +19,24 @@ const Chatbox = () => {
 
     fetchUsers();
   }, []);
+  useEffect(() => {
+    const currUser = async () => {
+      try {
+        const response = await axiosInstance.get('/home');
+        setMyId(response.data);
+      } catch (error) {
+        console.error('Error fetching user:', error);
+      }
+    };
+
+    currUser();
+  }, []);
   return (
 
     <div data-theme='forest' className="min-h-screen flex flex-col bg-base-200">
       {/* Top Nav */}
       <NavBar />
+      <h1>{myid.name}</h1>
 
       {/* Chat Body */}
       <div className="flex border-t-2  overflow-hidden h-[890px]">
@@ -42,7 +54,7 @@ const Chatbox = () => {
 
         {/* Main Chat Area */}
         <div className="flex w-3/4 bg-base-100 overflow-y-auto">
-          <ChatArea person={curruser} />
+          <ChatArea person={curruser} myId={myid} />
         </div>
       </div>
     </div>

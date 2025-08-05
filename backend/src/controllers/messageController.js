@@ -1,10 +1,12 @@
 import Message from '../models/message.js';
 import { encrypt, decrypt } from '../utils/encrypt.js';
+import User from '../models/User.js';
 
 
 export async function welcome(req, res) {
   try {
-    res.status(200).json({ user: req.user });
+    const user = await User.findById(req.user);
+    res.status(200).json({ user: user });
   } catch (error) {
     console.log("Error is :", error);
     res.status(500).json({ msg: "Internal Server Error" });
